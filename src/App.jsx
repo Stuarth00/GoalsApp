@@ -53,7 +53,7 @@ function App() {
           <h2>Modal content</h2>
           <GoalForm
           onAdd={handleAddGoal}
-          onClose={closeModal}/>
+          onClose={closeModalç}/>
           <button onClick={closeModal}>Close Modal</button>
 
         </Modal>
