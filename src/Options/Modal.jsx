@@ -4,27 +4,27 @@ const Modal = ({ isOpen, onClose, children }) => {
     const dialogRef = useRef(null);
 
 
-    // useEffect(() => {
-    //     if (!dialogRef.current) return;
+    useEffect(() => {
+        if (!dialogRef.current) return;
 
-    //     if (isOpen) {
-    //         dialogRef.current.showModal();
-    //         document.body.style.overflow = 'hidden';
-    //     } else {
-    //         dialogRef.current.close();
-    //         document.body.style.overflow = '';
-    //     }
+        if (isOpen) {
+            dialogRef.current.showModal();
+            document.body.style.overflow = 'hidden';
+        } else {
+            dialogRef.current.close();
+            document.body.style.overflow = '';
+        }
 
-    //     return () => {
-    //         document.body.style.overflow = '';
-    //     };
-    // }, [isOpen]);
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [isOpen]);
 
-    // const handleClose = (e) => {
-    //     if (e.target === dialogRef.current) {
-    //         onClose();
-    //     }
-    // };
+    const handleClose = (e) => {
+        if (e.target === dialogRef.current) {
+            onClose();
+        }
+    };
     return (
         <dialog 
             ref={dialogRef}

@@ -4,6 +4,7 @@ import GoalList from './List/GoalsList.jsx'
 import Navigation from './Options/Navigation.jsx'
 import Footer from './Footer/Footer.jsx'
 import Modal from './Options/Modal.jsx'
+import GoalForm from './Options/GoalForm.jsx'
 import './App.css'
 
 function App() {
@@ -24,6 +25,16 @@ function App() {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
+  //Receiving inputs from GoalForm
+  const handleAddGoal = (newGoalData) => {
+    const newGoal={
+      id:goals.length +1,
+      icon: 'TB',
+      ...newGoalData
+    };
+    setGoals([...goals, newGoal]);
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header/>
@@ -40,6 +51,9 @@ function App() {
         onClose={closeModal}
         >
           <h2>Modal content</h2>
+          <GoalForm
+          onAdd={handleAddGoal}
+          onClose={closeModal}/>
           <button onClick={closeModal}>Close Modal</button>
 
         </Modal>
