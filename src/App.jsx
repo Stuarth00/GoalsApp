@@ -29,10 +29,13 @@ function App() {
   const handleAddGoal = (newGoalData) => {
     const newGoal={
       id:goals.length +1,
-      icon: 'TB',
       ...newGoalData
     };
     setGoals([...goals, newGoal]);
+  }
+
+  const handleOnEdit = (id) => {
+    
   }
 
   return (
@@ -53,7 +56,7 @@ function App() {
           <h2>Modal content</h2>
           <GoalForm
           onAdd={handleAddGoal}
-          onClose={closeModalç}/>
+          onClose={closeModal}/>
           <button onClick={closeModal}>Close Modal</button>
 
         </Modal>
