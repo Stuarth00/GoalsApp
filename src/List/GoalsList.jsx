@@ -1,8 +1,5 @@
-function GoalList({ goals }) {
+function GoalList({ goals, onEdit }) {
 
-    const handleClick = (id) => {
-        console.log('goal id ' + id);
-    }
 
     return (
         <div className="col-span-2 bg-zinc-300 p-4 ">
@@ -15,7 +12,7 @@ function GoalList({ goals }) {
                             >{goal.icon}</p>
                             <p>{goal.unitFreq} / <small>{goal.unitType}</small></p>
                             <button
-                            onClick={() => handleClick(goal.id)}
+                            onClick={() => onEdit(goal)}
                             >{goal.description}</button>
                         </div>
 

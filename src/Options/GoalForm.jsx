@@ -1,6 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-function GoalForm({ onAdd, onClose }) {
+function GoalForm({ onSave, onClose, initialData }) {
+    useEffect(() => {
+        if (initialData) {
+            setFormData(initialData);
+        } else {
+            setFormData(
+                {
+                    description: '',
+                    unitFreq: '',
+                    unitType: '',
+                    targetCompleted: '',
+                    totalTarget: '',
+                    icon: ''
+                }
+            );
+        }
+    }, [initialData]);
+
     const [formData, setFormData] = useState({
         description: '',
         unitFreq: '',
@@ -20,7 +37,7 @@ function GoalForm({ onAdd, onClose }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onAdd(formData);
+        onSave(formData);
         onClose();
         setFormData({
             description: '',
@@ -35,7 +52,8 @@ function GoalForm({ onAdd, onClose }) {
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <h3>Add a new goal</h3>
+            <h3>
+                {initialData ? "Edit your goal" : "Add a new goal"}</h3>
             <label >Description</label>
             <input
                 type="text"
@@ -95,7 +113,7 @@ function GoalForm({ onAdd, onClose }) {
                 className='border p-2 rounded text-2xl'
                 required>
                 <option value="" disabled>select an icon</option>
-                <option value="book">📖</option>
+                <option value="📖">📖</option>
                 <option value="🎯">🎯</option>
                 <option value="🏋️">🏋️</option>
                 <option value="🔕">🔕</option>
@@ -104,8 +122,13 @@ function GoalForm({ onAdd, onClose }) {
             </select>
 
             <button type="submit" className="bg-lime-800 text-white p-2 rounded">
-                Save Goal
+                {initialData ? "Save your goal" : "Create your goal"}
             </button>
+            {initialData ?
+                <button type="submit" className="bg-indigo-800 text-white p-2 rounded">
+                    Delete Goal
+                </button> : null}
+
         </form>
     )
 }

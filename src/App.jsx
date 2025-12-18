@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Header from './Header/header.jsx'
 import GoalList from './List/GoalsList.jsx'   
 import Navigation from './Options/Navigation.jsx'
@@ -8,7 +8,12 @@ import GoalForm from './Options/GoalForm.jsx'
 import './App.css'
 
 function App() {
-  const [goals, setGoals] = useState([{
+  const [goals, setGoals] = useState(()=>{
+    const savedGoals = localStorage.getItem('goals');
+    if(savedGoals){
+      return JSON.parse(savedGoals);
+    }
+    return [{
     id: 1, 
     icon: '📚',
     description: 'Create React Projects',
@@ -17,25 +22,43 @@ function App() {
     targetCompleted: 3,
     totalTarget: 5,
     deadline: 'Jan 15th, 2026'
-  }
-  ]);
+  }];
+});
+
+  useEffect(()=> {
+    localStorage.setItem('goals', JSON.stringify(goals));
+  }, [goals]);
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () =>{
+     setIsModalOpen(false);
+     setGoalToEdit(null);
+  };
 
   //Receiving inputs from GoalForm
-  const handleAddGoal = (newGoalData) => {
+  const hanldeSaveGoal = (newGoalData) => {
+    if(goalToEdit){
+      setGoals(goals.map(g=> g.id === goalToEdit.id ? 
+        {...g, ...newGoalData}
+        : g
+      ));
+    } else {
     const newGoal={
       id:goals.length +1,
       ...newGoalData
     };
     setGoals([...goals, newGoal]);
+    }
+    closeModal();
   }
 
-  const handleOnEdit = (id) => {
-    
+  //Editing more
+  const [goalToEdit, setGoalToEdit] = useState(null);
+  const hanldeEdit = (goal) => {
+    setGoalToEdit(goal);
+    setIsModalOpen(true);
   }
 
   return (
@@ -48,6 +71,7 @@ function App() {
         />
         <GoalList
           goals = {goals}
+          onEdit={hanldeEdit}
         />
         <Modal 
         isOpen={isModalOpen}
@@ -55,7 +79,8 @@ function App() {
         >
           <h2>Modal content</h2>
           <GoalForm
-          onAdd={handleAddGoal}
+          onSave={hanldeSaveGoal}
+          initialData={goalToEdit}
           onClose={closeModal}/>
           <button onClick={closeModal}>Close Modal</button>
 
