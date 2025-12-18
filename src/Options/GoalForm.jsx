@@ -53,7 +53,7 @@ function GoalForm({ onSave, onClose, initialData }) {
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <h3>
-                {initialData ? "Edit your goal" : "Add a new goal"}</h3>
+                {initialData ? "Edit the selected goal" : "Add a new goal"}</h3>
             <label >Description</label>
             <input
                 type="text"
