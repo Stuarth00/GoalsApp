@@ -127,6 +127,7 @@ function GoalForm({ onSave, onClose, initialData, onDelete }) {
             </button>
             {initialData ?
                 <button 
+                type='button'
                 onClick={() => onDelete(initialData.id)} 
                 className="bg-indigo-800 text-white p-2 rounded"
                 >

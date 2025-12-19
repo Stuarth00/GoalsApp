@@ -38,7 +38,7 @@ function App() {
   };
 
   //Receiving inputs from GoalForm
-  const hanldeSaveGoal = (newGoalData) => {
+  const handleSaveGoal = (newGoalData) => {
     if(goalToEdit){
       setGoals(goals.map(g=> g.id === goalToEdit.id ? 
         {...g, ...newGoalData}
@@ -46,7 +46,7 @@ function App() {
       ));
     } else {
     const newGoal={
-      id:goals.length +1,
+      id: Date.now(),
       ...newGoalData
     };
     setGoals([...goals, newGoal]);
@@ -56,7 +56,7 @@ function App() {
 
   //Editing more
   const [goalToEdit, setGoalToEdit] = useState(null);
-  const hanldeEdit = (goal) => {
+  const handleEdit = (goal) => {
     setGoalToEdit(goal);
     setIsModalOpen(true);
   }
@@ -85,7 +85,7 @@ function App() {
         />
         <GoalList
           goals = {goals}
-          onEdit={hanldeEdit}
+          onEdit={handleEdit}
           onComplete={handleCompleteGoal}
         />
         <Modal 
@@ -93,7 +93,7 @@ function App() {
         onClose={closeModal}
         >
           <GoalForm
-          onSave={hanldeSaveGoal}
+          onSave={handleSaveGoal}
           initialData={goalToEdit}
           onClose={closeModal}
           onDelete={handleDeleteGoal}/>
