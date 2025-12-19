@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-function GoalForm({ onSave, onClose, initialData }) {
+function GoalForm({ onSave, onClose, initialData, onDelete }) {
     useEffect(() => {
         if (initialData) {
             setFormData(initialData);
@@ -10,7 +10,7 @@ function GoalForm({ onSave, onClose, initialData }) {
                     description: '',
                     unitFreq: '',
                     unitType: '',
-                    targetCompleted: '',
+                    targetCompleted: 0,
                     totalTarget: '',
                     icon: ''
                 }
@@ -28,10 +28,10 @@ function GoalForm({ onSave, onClose, initialData }) {
     })
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type } = e.target;
         setFormData((prev) => ({
             ...prev,
-            [name]: value
+            [name]: type === 'number' ? Number(value) : value
         }));
     };
 
@@ -53,7 +53,7 @@ function GoalForm({ onSave, onClose, initialData }) {
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <h3>
-                {initialData ? "Edit the selected goal" : "Add a new goal"}</h3>
+                {initialData ? "Edit the selected  goal" : "Add a new goal"}</h3>
             <label >Description</label>
             <input
                 type="text"
@@ -66,6 +66,7 @@ function GoalForm({ onSave, onClose, initialData }) {
 
             <label >How many times do you want to achieve this goal?</label>
             <input
+                type="number"
                 name="unitFreq"
                 placeholder="e.g 3"
                 value={formData.unitFreq}
@@ -87,7 +88,7 @@ function GoalForm({ onSave, onClose, initialData }) {
 
             <label >How many times you have achieved this goal up to now?</label>
             <input
-                type="text"
+                type="number"
                 name="targetCompleted"
                 placeholder='e.g 3'
                 value={formData.targetCompleted}
@@ -97,7 +98,7 @@ function GoalForm({ onSave, onClose, initialData }) {
 
             <label >How many times you want to achieve this goal?</label>
             <input
-                type="text"
+                type="number"
                 name='totalTarget'
                 placeholder='e.g. 10'
                 onChange={handleChange}
@@ -110,7 +111,7 @@ function GoalForm({ onSave, onClose, initialData }) {
                 name="icon"
                 value={formData.icon}
                 onChange={handleChange}
-                className='border p-2 rounded text-2xl'
+                className='border p-2 rounded text-xl'
                 required>
                 <option value="" disabled>select an icon</option>
                 <option value="📖">📖</option>
@@ -125,7 +126,10 @@ function GoalForm({ onSave, onClose, initialData }) {
                 {initialData ? "Save your goal" : "Create your goal"}
             </button>
             {initialData ?
-                <button type="submit" className="bg-indigo-800 text-white p-2 rounded">
+                <button 
+                onClick={() => onDelete(initialData.id)} 
+                className="bg-indigo-800 text-white p-2 rounded"
+                >
                     Delete Goal
                 </button> : null}
 

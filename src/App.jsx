@@ -60,6 +60,20 @@ function App() {
     setGoalToEdit(goal);
     setIsModalOpen(true);
   }
+  //Deliting gaol
+  const handleDeleteGoal = (goalId) => {
+    const updatedGoals = goals.filter(g => g.id !== goalId);
+    setGoals(updatedGoals);
+    closeModal();
+  }
+
+  //Completing goals counter
+  const handleCompleteGoal = (goalId) => {
+    setGoals(goals.map(g => 
+      g.id === goalId && g.targetCompleted < g.totalTarget ?
+      {...g, targetCompleted: g.targetCompleted + 1} : g
+    ));
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -72,16 +86,18 @@ function App() {
         <GoalList
           goals = {goals}
           onEdit={hanldeEdit}
+          onComplete={handleCompleteGoal}
         />
         <Modal 
         isOpen={isModalOpen}
         onClose={closeModal}
         >
-          <h2>Modal content</h2>
           <GoalForm
           onSave={hanldeSaveGoal}
           initialData={goalToEdit}
-          onClose={closeModal}/>
+          onClose={closeModal}
+          onDelete={handleDeleteGoal}/>
+
           <button onClick={closeModal}>Close Modal</button>
 
         </Modal>
